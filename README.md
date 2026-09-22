@@ -1,9 +1,8 @@
-# IBM Watson NLP Emotion Detector
+# oaqjp-final-project-emb-ai
 
-## Final Project
+## Final Project - Emotion Detector
 
-This project implements an emotion detection web application using the IBM Watson NLP emotion service and Flask.
-
+This project implements an emotion detection application using the IBM Watson NLP EmotionPredict service and Flask.
 ### Features
 
 - Detects anger, disgust, fear, joy, and sadness.
