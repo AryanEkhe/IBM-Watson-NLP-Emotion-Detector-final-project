@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Emotion Detector</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 600px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 90%;
+            height: 120px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            resize: none;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #333;
+            color: white;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        #result {
+            margin-top: 30px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .dominant {
+            font-weight: bold;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>IBM Watson Emotion Detector</h1>
+
+    <textarea
+        id="textToAnalyze"
+        placeholder="Enter a sentence here..."
+    ></textarea>
+
+    <br>
+
+    <button onclick="detectEmotion()">
+        Detect Emotion
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+function detectEmotion() {
+
+    const text =
+        document.getElementById("textToAnalyze").value;
+
+    fetch(
+        "/emotionDetector?textToAnalyze="
+        + encodeURIComponent(text)
+    )
+    .then(response => response.text())
+    .then(data => {
+
+        if (data.includes("Invalid text")) {
+            document.getElementById("result").innerHTML =
+                "<p>" + data + "</p>";
+            return;
+        }
+
+        const result = JSON.parse(data);
+
+        document.getElementById("result").innerHTML =
+            "<p>Anger: " + result.anger + "</p>" +
+            "<p>Disgust: " + result.disgust + "</p>" +
+            "<p>Fear: " + result.fear + "</p>" +
+            "<p>Joy: " + result.joy + "</p>" +
+            "<p>Sadness: " + result.sadness + "</p>" +
+            "<p class='dominant'>Dominant Emotion: "
+            + result.dominant_emotion
+            + "</p>";
+    })
+    .catch(error => {
+        document.getElementById("result").innerHTML =
+            "<p>Error: " + error + "</p>";
+    });
+}
+</script>
+
+</body>
+</html>
